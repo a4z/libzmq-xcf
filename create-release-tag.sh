@@ -43,7 +43,7 @@ fi
 
 NEW_TAG="v4.3.5-${TODAY}_${BUILD_NR}"
 echo "Create new tag: ${NEW_TAG}"
-git tag ${NEW_TAG}
+git tag -a ${NEW_TAG} -m "Release ${NEW_TAG}"
 
 echo "TODO: Push the new tag to the remote repository. Run:"
 echo  git push origin ${NEW_TAG}
