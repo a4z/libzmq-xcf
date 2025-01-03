@@ -1,0 +1,190 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "xcode",
+      "generator": "Xcode",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "toolchainFile": "${sourceDir}/ios-cmake/ios.toolchain.cmake",
+      "cacheVariables": {
+        "BUILD_SHARED": "OFF",
+        "CMAKE_COMPILE_WARNING_AS_ERROR": "OFF",
+        "PLATFORM": "MAC_ARM64",
+        "WITH_PERF_TOOL": "OFF",
+        "WITH_TLS": "OFF"
+      },
+      "environment": {
+      },
+      "hidden": true
+    },
+    {
+      "name": "macos",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "MAC_ARM64"
+      }
+    },
+    {
+      "name": "ios",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "OS64"
+      }
+    },
+    {
+      "name": "ios-simulator",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "SIMULATORARM64"
+      }
+    },
+    {
+      "name": "mac-catalyst",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "MAC_CATALYST_ARM64"
+      }
+    },
+    {
+      "name": "tvos",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "TVOS"
+      }
+    },
+    {
+      "name": "tvos-simulator",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "SIMULATORARM64_TVOS"
+      }
+    },
+    {
+      "name": "watchos",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "WATCHOS"
+      }
+    },
+    {
+      "name": "watchos-simulator",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "SIMULATORARM64_WATCHOS"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "macos",
+      "configurePreset": "macos",
+      "configuration": "Debug"
+    },
+    {
+      "name": "macos-release",
+      "configurePreset": "macos",
+      "configuration": "Release"
+    },
+    {
+      "name": "ios",
+      "configurePreset": "ios",
+      "configuration": "Debug"
+    },
+    {
+      "name": "ios-release",
+      "configurePreset": "ios",
+      "configuration": "Release"
+    },
+    {
+      "name": "ios-simulator",
+      "configurePreset": "ios-simulator",
+      "configuration": "Debug"
+    },
+    {
+      "name": "ios-simulator-release",
+      "configurePreset": "ios-simulator",
+      "configuration": "Release"
+    },
+    {
+      "name": "mac-catalyst",
+      "configurePreset": "mac-catalyst",
+      "configuration": "Debug"
+    },
+    {
+      "name": "mac-catalyst-release",
+      "configurePreset": "mac-catalyst",
+      "configuration": "Release"
+    },
+    {
+      "name": "tvos",
+      "configurePreset": "tvos",
+      "configuration": "Debug"
+    },
+    {
+      "name": "tvos-release",
+      "configurePreset": "tvos",
+      "configuration": "Release"
+    },
+    {
+      "name": "tvos-simulator",
+      "configurePreset": "tvos-simulator",
+      "configuration": "Debug"
+    },
+    {
+      "name": "tvos-simulator-release",
+      "configurePreset": "tvos-simulator",
+      "configuration": "Release"
+    },
+
+    {
+      "name": "watchos",
+      "configurePreset": "watchos",
+      "configuration": "Debug"
+    },
+    {
+      "name": "watchos-release",
+      "configurePreset": "watchos",
+      "configuration": "Release"
+    },
+    {
+      "name": "watchos-simulator",
+      "configurePreset": "watchos-simulator",
+      "configuration": "Debug"
+    },
+    {
+      "name": "watchos-simulator-release",
+      "configurePreset": "watchos-simulator",
+      "configuration": "Release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "macos",
+      "configurePreset": "macos"
+    },
+    {
+      "name": "macos-release",
+      "inherits": "macos",
+      "configuration": "Release"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "macos",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "macos"
+        },
+        {
+          "type": "build",
+          "name": "macos"
+        },
+        {
+          "type": "test",
+          "name": "macos"
+        }
+      ]
+    }
+  ]
+}

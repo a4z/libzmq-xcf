@@ -1,0 +1,99 @@
+name: build-xcf
+
+on:
+  push:
+    # branches:
+    #   - main
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: MacOS-latest
+    strategy:
+      matrix:
+        include:
+          - targets: macos
+          - targets: ios ios-simulator
+          - targets: watchos watchos-simulator
+          - targets: tvos tvos-simulator
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+
+      - name: Set up targets
+        run: echo "TARGETS=${{ matrix.targets }}" >> $GITHUB_ENV
+
+      - name: Build for targets
+        run: |
+          for target in $TARGETS; do
+            echo "Building for ${target} on $(uname -om)"
+            cmake --preset ${target}
+            cmake --build --preset ${target}-release
+            DESTDIR=build/${target}/zinstall cmake --install build/${target} --config Release
+          done
+        env:
+          TARGETS: ${{ env.TARGETS }}
+
+      - name: Set artifact name
+        run: echo "ARTIFACT_NAME=${TARGETS// /-}" >> $GITHUB_ENV
+        env:
+          TARGETS: ${{ env.TARGETS }}
+
+      - name: Upload build directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: build/*/zinstall
+        env:
+          ARTIFACT_NAME: ${{ env.ARTIFACT_NAME }}
+
+  release:
+    runs-on: MacOS-latest
+    needs: build
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: build/
+      - name: Combine builds
+        run: |
+          write_module_map_to() {
+            local file=$1
+            cat > "$file" <<EOF
+          module ZeroMQ [system] {
+            header "zmq.h"
+            link "zmq"
+            export *
+          }
+          EOF
+          }
+          xcf_args=""
+          for install_path in $(find build -type d -name "zinstall"); do
+            xcf_args="${xcf_args} -library ${install_path}/usr/local/lib/libzmq.a -headers ${install_path}/usr/local/include/"
+            write_module_map_to ${install_path}/usr/local/include/module.modulemap
+            rm  ${install_path}/usr/local/include/zmq_utils.h
+          done
+          xcodebuild -create-xcframework ${xcf_args} -output libzmq.xcframework
+
+      - name: Create xcframework zip
+        run: zip -r libzmq.xcframework.zip libzmq.xcframework
+
+      - name: Upload XCFramework
+        uses: actions/upload-artifact@v4
+        with:
+          name: libzmq.xcframework.zip
+          path: libzmq.xcframework.zip
+
+      - name: Publish artifact on tag
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: libzmq.xcframework.zip
+
