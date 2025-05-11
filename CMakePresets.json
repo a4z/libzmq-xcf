@@ -13,8 +13,7 @@
         "WITH_PERF_TOOL": "OFF",
         "WITH_TLS": "OFF"
       },
-      "environment": {
-      },
+      "environment": {},
       "hidden": true
     },
     {
@@ -71,6 +70,20 @@
       "inherits": "xcode",
       "cacheVariables": {
         "PLATFORM": "SIMULATORARM64_WATCHOS"
+      }
+    },
+    {
+      "name": "visionos",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "VISIONOS"
+      }
+    },
+    {
+      "name": "visionos-simulator",
+      "inherits": "xcode",
+      "cacheVariables": {
+        "PLATFORM": "SIMULATOR_VISIONOS"
       }
     }
   ],
@@ -135,7 +148,6 @@
       "configurePreset": "tvos-simulator",
       "configuration": "Release"
     },
-
     {
       "name": "watchos",
       "configurePreset": "watchos",
@@ -154,6 +166,26 @@
     {
       "name": "watchos-simulator-release",
       "configurePreset": "watchos-simulator",
+      "configuration": "Release"
+    },
+    {
+      "name": "visionos",
+      "configurePreset": "visionos",
+      "configuration": "Debug"
+    },
+    {
+      "name": "visionos-release",
+      "configurePreset": "visionos",
+      "configuration": "Release"
+    },
+    {
+      "name": "visionos-simulator",
+      "configurePreset": "visionos-simulator",
+      "configuration": "Debug"
+    },
+    {
+      "name": "visionos-simulator-release",
+      "configurePreset": "visionos-simulator",
       "configuration": "Release"
     }
   ],

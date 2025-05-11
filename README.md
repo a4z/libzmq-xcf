@@ -6,7 +6,7 @@ This is are build of [zeromq/libzmq](https://github.com/zeromq/libzmq) for
 - iOS (and iOS Simulator)
 - watchOS (and watchOS Simulator)
 - tvOS (and tvOS Simulator)
-
+- visionOS (and visionOS Simulator)
 bundled as **XCFramework**.
 
 The builds can be downloaded from the [release section of this repo](https://github.com/a4z/libzmq-xcf/releases)

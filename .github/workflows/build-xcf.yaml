@@ -20,6 +20,7 @@ jobs:
           - targets: ios ios-simulator
           - targets: watchos watchos-simulator
           - targets: tvos tvos-simulator
+          - targets: visionos visionos-simulator
 
     steps:
       - name: Checkout
@@ -34,7 +35,7 @@ jobs:
         run: |
           for target in $TARGETS; do
             echo "Building for ${target} on $(uname -om)"
-            cmake --preset ${target}
+            cmake --preset ${target} -DCMAKE_POLICY_VERSION_MINIMUM=3.5
             cmake --build --preset ${target}-release
             DESTDIR=build/${target}/zinstall cmake --install build/${target} --config Release
           done
