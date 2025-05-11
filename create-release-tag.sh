@@ -21,7 +21,7 @@ if submodules_did_change; then
     git push origin main
 else
     echo "No new tag required."
-    exit 0
+#    exit 0
 fi
 
 REPO_URL="git@github.com:a4z/libzmq-xcf.git"
